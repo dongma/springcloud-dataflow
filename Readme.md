@@ -46,7 +46,7 @@ bash> wget https://repo.spring.io/release/org/springframework/cloud/spring-cloud
 ```shell
 bash> java -jar spring-cloud-dataflow-server-local-1.7.4.RELEASE.jar
 ```
-![1550165201543](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550165201543.png)
+![1550165201543](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550165201543.png)
 
 虽然`Cloud Dataflow`提供了管理界面用于操作数据流，管理`task`任务，但有时并不是很高效。通过`cloud-dataflow-shell`可以完成图形化界面相同的工作，如`register application`，`deploy stream`，`deploy task`等等。可以在本地启动`spring-cloud-dataflow-shell-1.7.4.RELEASE.jar`完成与管理界面相同的工作。
 ```shell
@@ -58,7 +58,7 @@ bash> dataflow config server `http://192.168.100.86`
 bash> Successfully targeted `http://192.168.100.86`
 dataflow:> 
 ```
-![1550166285559](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550166285559.png)
+![1550166285559](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550166285559.png)
 
 默认情况下应用不会自动注册，如果想要注册所有和kafka集成的开箱即用的流应用，可以使用如下命令注册应用：
 ```shell
@@ -72,7 +72,7 @@ dataflow:> app import --uri `http://bit.ly/Bacon-RELEASE-stream-applications-kaf
 
 * __app info：__ 查看`time`应用的基本信息（`app info source:time`）：
 
-![1550169071672](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550169071672.png)
+![1550169071672](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550169071672.png)
 
 * __app register: __ 向`Dataflow`中注册应用信息，`Dataflow` 注册应用主要有两种方式：通过`jar`的路径注册、通过`maven`仓库地址注册应用信息：
 ```shell
@@ -85,7 +85,7 @@ dataflow:>app register --type source --name my-app --uri file://root/apps/my-app
 dataflow:>app register --type processor --name pose-estimation --uri maven://org.springframework.cloud.stream.app:pose-estimation-processor-rabbit:2.0.2.BUILD-SNAPSHOT
 ```
 
-![1550170091573](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550170091573.png)
+![1550170091573](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550170091573.png)
 
 * __app unregister: __ 从`Cloud Dataflow`中移除已经注册的应用app：
 ```bash
@@ -97,7 +97,7 @@ dataflow:> Successfully unregistered application 'gemfire' with type 'sink'
 dataflow:> help
 ```
 
-![1550372171722](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550372171722.png)
+![1550372171722](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550372171722.png)
 
 ### 三、Cloud-Dataflow 流式处理
 
@@ -105,7 +105,7 @@ __SpringCloud Stream介绍：__ `Spring Cloud Stream`是创建消息驱动微服
 
 __Spring Cloud Stream应用模型：__ `Spring Cloud Stream`由一个中立的中间件内核组成。`Spring Cloud Stream`会注入输入和输出的`channels`，应用程序通过这些`channels`与外界通信，而`channels`则是通过一个明确的中间件`Binder`与外部`Brokers`连接。
 
-![1550375366340](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550375366340.png)
+![1550375366340](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550375366340.png)
 
 #### 1. Spring Cloud Stream使用
 根据`Spring Cloud Stream App Starters`文档内容，下载`log-sink-kafka-10-1.3.0.RELEASE.jar`，`time-source-kafka-10-1.3.0.RELEASE.jar`(在运行环境需要启动Kafka)；
@@ -117,7 +117,7 @@ bash> java -jar log-sink-kafka-10-1.3.0.RELEASE.jar --spring.cloud.stream.bindin
 ```
 启动应用后，可以观察到`log-sink-kafka`在控制台上一直在打印当前系统时间（消费Kafka消息队列中消息）：
 
-![1550374961839](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550374961839.png)
+![1550374961839](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550374961839.png)
 
 #### 2. Spring Cloud Stream App 类型
 1. __source__:  数据源主要用于向消息中间件中发送消息，需要指定消息的输出地址（指定 `output.destination`）；
@@ -161,7 +161,7 @@ dataflow> stream list
 # 在dataflow中向http应用发送请求数据，如果请求发送成功会显示[202 accepted];同时在Maridb进行验证是否有记录插入数据表；
 dataflow> http post --contentType 'application/json' --target `http://localhost:8787` --data "{\"name\": \"Dataflow\"}"
 ```
-![1550384142958](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550384142958.png)
+![1550384142958](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550384142958.png)
 
 #### 4.Spring Cloud Stream App实现
 1. __Source App：__ 下面可以看到一个简单的Source应用程序，在`@InputChannelAdapter`注释的帮助下，使得程序可以将产生的消息发送到`spring.cloud.stream.bindings.output.destination`配置的输出`channel`中，`@EnableBinding`注解触发Spring Cloud Stream配置；
@@ -231,7 +231,7 @@ dataflow:>stream create --definition "http --port=8090 | log" --name myhttpstrea
 #### 5.Cloud Dataflow 中查看应用运行日志
 在部署应用以及应用运行过程中难免会出现异常，这时需要查看应用的运行日志，在`Cloud Dataflow`中可以在 管理页面中 `'Runtime-> application'`找到应用的运行日志：
 
-![1550395192968](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550395192968.png)
+![1550395192968](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550395192968.png)
 
 #### 6.Analystic 对数据流进行实时分析
 在`Cloud Dataflow`可以对当前`Stream`流中的数据进行实时分析，在 使用`Cloud Dataflow`进行数据分析功能时需要启动`Redis`服务。目前支持3种分析的维度：
@@ -254,11 +254,11 @@ dataflow> http post --contentType 'application/json' --target http://localhost:8
 # 查看当前field-value-counter分析列表
 dataflow> field-value-counter list
 ```
-![1550411862573](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550411862573.png)
+![1550411862573](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550411862573.png)
 
 在`data flow`的管理界面查看分析结果，`Analystic | Dashboard`，在`Metric Type`选项选择`Field Value Counters` ，`Counter Name`选项选择`httpfield`，`Visualization`选项选择`Pie Chart`，最后结果如下图所示：在饼状图中展示了发送给`http`应用程序`name字段`所有不重复的字段值；
 
-![1550412557393](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550412557393.png)
+![1550412557393](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550412557393.png)
 
 
 ### 四、Cloud-Dataflow 任务处理
@@ -285,7 +285,7 @@ Created new task 'timestamp-task'
 # 使用task list查看创建的任务
 dataflow> task list
 ```
-![1550417556259](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550417556259.png)
+![1550417556259](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550417556259.png)
 
 发起一个任务：一个任务可以通过`Restful Api`或者`Cloud Dataflow shell`命令行进行触发，在命令行中输入`task launch [task-name]`可以触发这个任务：
 ```bash
@@ -308,7 +308,7 @@ dataflow:> task destory timestamp-task
 # 验证特定的task任务(有时候一个task任务中可能包含多个应用，可以对app register时的注册地址是否有效进行验证)
 dataflow:> task validate timestamp-task
 ```
-![1550465938789](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550465938789.png)
+![1550465938789](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550465938789.png)
 
 #### 2. Composed Task 任务管理
 `Spring Cloud Task`数据流允许用户创建一个有向图，图中的每个节点都是一个任务应用程序。这是通过对组合任务使用`DSL`来完成的。可以通过`Restful API`、`Spring Cloud Dataflow Shell`或`Spring Cloud Dataflow UI`创建复合任务。
@@ -333,7 +333,7 @@ dataflow:> task list
 dataflow:> task execution list
 ```
 
-![1550508211355](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550508211355.png)
+![1550508211355](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550508211355.png)
 
 在`launch composed task`任务时，可以通过`app.<composed task definition name>.<child task app name>.<property>`的方式设置子任务的属性。
 ```bash
@@ -349,7 +349,7 @@ dataflow:> task destroy composed-task
 # 在销毁composed-task任务之后，执行task list就看不到已经注销的应用
 dataflow:> task list
 ```
-![1550508986307](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550508986307.png)
+![1550508986307](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550508986307.png)
 
 #### 3. Composed task的DSL
 1. 当`task1`执行成功后再执行`task2`，有依赖条件的`composed task`，通常使用`&&`操作符表示这种关系。
@@ -358,7 +358,7 @@ dataflow:> task list
 dataflow:> task create composed-task --definiton "task1 && task2"
 ```
 
-![1550511124565](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550511124565.png)
+![1550511124565](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550511124565.png)
 
 2. 当`task1`任务执行状态`Failed`时执行`bar`应用，执行状态为`Completed`则执行`baz`应用，当`task1`任务执行状态为其它时则该`composed task`任务执行结束；
 
@@ -367,7 +367,7 @@ dataflow:> task create composed-task --definition "task1 'Failed' -> bar 'Comple
 # 可以使通配符'*'表示其它所有情况
 dataflow:> task create composed-task --definition "task1 'Failed' -> bar '*' -> baz"
 ```
-![1550511176552](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550511176552.png)
+![1550511176552](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550511176552.png)
 
 3. 并行执行`task`任务，使用`< || >`表示
 
@@ -375,13 +375,13 @@ dataflow:> task create composed-task --definition "task1 'Failed' -> bar '*' -> 
 # foo、bar、baz 3个task任务可以并行执行
 dataflow:> task create parallel-task --definition "<foo || bar || baz>" 
 ```
-![1550511230394](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550511230394.png)
+![1550511230394](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550511230394.png)
 4. `foo`、`bar`、`baz`应用可以并行执行，等全部执行完成后，可以并行执行`qux`、`quux`任务
 ```bash
 dataflow:> task create my-split-task --definition "<foo || bar || baz> && <qux || quux>"'
 ```
 
-![1550511479131](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550511479131.png) 
+![1550511479131](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550511479131.png) 
 
 ### 五、Cloud Dataflow调研结论
 `Cloud Dataflow`在基于`Spring Cloud Stream`之上增强了对于`Stream`的数据流管理，`Cloud Dataflow`提供的`DSL`可以自定义数据流，同时其提供的实时数据分析功能也可以对数据流内容进行实时监控，其自身的`DSL`对于数据流处理提供了很大的灵活性。
