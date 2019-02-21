@@ -32,7 +32,7 @@ C:>  docker-compose up -d
 #### 3. Cloud Dataflow Dashboard后台UI
 docker-compose服务启动之后，可以通过访问`http://127.0.0.1:9393/dashboard`进行Dataflow管理界面：
 
-![1550163620653](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550163620653.png)
+![1550163620653](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550163620653.png)
 
 #### 4. 使用Maven在本地安装Cloud Dataflow环境
 ```shell
@@ -68,13 +68,13 @@ dataflow:> app import --uri `http://bit.ly/Bacon-RELEASE-stream-applications-kaf
 #### 5. Cloud Dataflow Shell 常用的命令
 * __app list：__ 查看当前`Dataflow`注册的所有应用信息：
 
-![1550168910934](C:\Users\ChinaDaas\AppData\Roaming\Typora\typora-user-images\1550168910934.png)
+![1550168910934](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550168910934.png)
 
 * __app info：__ 查看`time`应用的基本信息（`app info source:time`）：
 
 ![1550169071672](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550169071672.png)
 
-* __app register: __ 向`Dataflow`中注册应用信息，`Dataflow` 注册应用主要有两种方式：通过`jar`的路径注册、通过`maven`仓库地址注册应用信息：
+* __app register: __  向`Dataflow`中注册应用信息，`Dataflow` 注册应用主要有两种方式：通过`jar`的路径注册、通过`maven`仓库地址注册应用信息：
 ```shell
 # 通过指定app.jar的路径进行注册，在windows系统上不易使用
 dataflow:>app register --type source --name my-app --uri file://root/apps/my-app.jar
@@ -87,7 +87,7 @@ dataflow:>app register --type processor --name pose-estimation --uri maven://org
 
 ![1550170091573](https://raw.githubusercontent.com/SamMACode/springcloud-dataflow/master/doc/images/1550170091573.png)
 
-* __app unregister: __ 从`Cloud Dataflow`中移除已经注册的应用app：
+* __app unregister: __  从`Cloud Dataflow`中移除已经注册的应用app：
 ```bash
 dataflow:> app unregister --type sink --name gemfire
 dataflow:> Successfully unregistered application 'gemfire' with type 'sink'
@@ -262,7 +262,7 @@ dataflow> field-value-counter list
 
 
 ### 四、Cloud-Dataflow 任务处理
-__SpringCloud Task介绍：__Spring Cloud Task 主要解决微服务中周期短的的任务以及任务调度的工作，比如“每间隔一段时间对任务进行重新执行、或者在每天的特定时刻执行任务等等”。一个任务通常作为后台进程来执行，在`Spring Cloud Task`中常常使用`@EnableTask`注解启用其功能，用户常常在主进程中发起一个任务，当任务结束时该进程也终止。一个任务通常需要记录其开始时间`startTime`、结束时间`endTime`以及任务最终执行状态`exit code`。`Cloud Dataflow`中`Task`的实现主要是基于`Spring Cloud Task`项目的。
+__SpringCloud Task介绍：__ Spring Cloud Task 主要解决微服务中周期短的的任务以及任务调度的工作，比如“每间隔一段时间对任务进行重新执行、或者在每天的特定时刻执行任务等等”。一个任务通常作为后台进程来执行，在`Spring Cloud Task`中常常使用`@EnableTask`注解启用其功能，用户常常在主进程中发起一个任务，当任务结束时该进程也终止。一个任务通常需要记录其开始时间`startTime`、结束时间`endTime`以及任务最终执行状态`exit code`。`Cloud Dataflow`中`Task`的实现主要是基于`Spring Cloud Task`项目的。
 #### 1.  Task任务的生命周期
 创建一个`Spring Cloud Task`程序（依赖于spring-cloud-starter-task）
 ```java
