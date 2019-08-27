@@ -12,6 +12,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
@@ -55,7 +56,7 @@ public class ParallelTaskApp {
 
     public static void main(String[] args) {
         String[] newArgs = new String[]{"inputFlatFile=data/bigtransactions.csv",
-                "outputFile=batch-task-demo/target/composed-writer.csv"};
+                "outputFile=batch-task-demo/target/item-processor.csv"};
         SpringApplication.run(ParallelTaskApp.class, newArgs);
     }
 
@@ -67,6 +68,9 @@ public class ParallelTaskApp {
 
     @Autowired
     private JobListener jobListener;
+
+    @Autowired
+    private ItemFilterProcessor filterProcessor;
 
     @Bean
     public Job parallelTransactionJob() {
@@ -107,6 +111,7 @@ public class ParallelTaskApp {
         return this.stepBuilderFactory.get("parseCsvRecordStep1")
                 .<Transaction, Transaction>chunk(1000)
                 .reader(flatFileItemReader(null))
+                .processor(filterProcessor)
                 .writer(compositeWriter())
                 .taskExecutor(taskExecutor)
                 .build();
@@ -243,6 +248,22 @@ class JobListener implements JobExecutionListener {
             taskExecutor.shutdown();
         }
         LOGGER.info("JobListener - complete spring batch task, shutdown taskExecutor threadPool");
+    }
+
+}
+
+/**
+ * Spring batch Item Processor filter negative number amount
+ */
+@Component
+class ItemFilterProcessor implements ItemProcessor<Transaction, Transaction> {
+
+    @Override
+    public Transaction process(Transaction item) throws Exception {
+        if (item.getAmount().doubleValue() < 0) {
+            return null;
+        }
+        return item;
     }
 
 }
