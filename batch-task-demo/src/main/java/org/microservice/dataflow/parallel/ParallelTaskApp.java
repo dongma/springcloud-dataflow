@@ -1,6 +1,7 @@
 package org.microservice.dataflow.parallel;
 
 import org.microservice.dataflow.domain.Transaction;
+import org.microservice.dataflow.exception.InvalidItemException;
 import org.microservice.dataflow.mapper.TransactionRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.annotation.OnSkipInRead;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -38,6 +40,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.TransientDataAccessException;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsOperations;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -72,10 +75,14 @@ public class ParallelTaskApp {
     @Autowired
     private ItemFilterProcessor filterProcessor;
 
+    @Autowired
+    private ChunkSkipListener skipListener;
+
     @Bean
     public Job parallelTransactionJob() {
         return this.jobBuilderFactory.get("parallelTransactionJob")
                 .start(parseCsvRecordStep1(null))
+                .preventRestart()
                 .listener(jobListener)
                 .build();
     }
@@ -110,6 +117,12 @@ public class ParallelTaskApp {
     public Step parseCsvRecordStep1(ThreadPoolTaskExecutor taskExecutor) {
         return this.stepBuilderFactory.get("parseCsvRecordStep1")
                 .<Transaction, Transaction>chunk(1000)
+                .faultTolerant()
+                .skip(InvalidItemException.class)
+                .skipLimit(Integer.MAX_VALUE)
+                .retry(TransientDataAccessException.class)
+                .retryLimit(3)
+                .listener(skipListener)
                 .reader(flatFileItemReader(null))
                 .processor(filterProcessor)
                 .writer(compositeWriter())
@@ -264,6 +277,19 @@ class ItemFilterProcessor implements ItemProcessor<Transaction, Transaction> {
             return null;
         }
         return item;
+    }
+
+}
+
+/**
+ * Chunk Step Listener When Skipped item because of exception
+ */
+@Component
+class ChunkSkipListener {
+
+    @OnSkipInRead
+    public void writeSkipItem(Throwable throwable) {
+        // todo: writer skipItem to file
     }
 
 }
