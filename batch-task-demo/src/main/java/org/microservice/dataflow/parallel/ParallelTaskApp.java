@@ -45,6 +45,7 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsOperations;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
@@ -81,7 +82,7 @@ public class ParallelTaskApp {
     @Bean
     public Job parallelTransactionJob() {
         return this.jobBuilderFactory.get("parallelTransactionJob")
-                .start(parseCsvRecordStep1(null))
+                .start(parseCsvRecordStep1(null, null))
                 .preventRestart()
                 .listener(jobListener)
                 .build();
@@ -112,9 +113,9 @@ public class ParallelTaskApp {
                 .build();
     }
 
-    @Bean
+    @StepScope
     @Qualifier("taskExecutor")
-    public Step parseCsvRecordStep1(ThreadPoolTaskExecutor taskExecutor) {
+    public Step parseCsvRecordStep1(ThreadPoolTaskExecutor taskExecutor, PlatformTransactionManager transactionManager) {
         return this.stepBuilderFactory.get("parseCsvRecordStep1")
                 .<Transaction, Transaction>chunk(1000)
                 .faultTolerant()
@@ -126,6 +127,7 @@ public class ParallelTaskApp {
                 .reader(flatFileItemReader(null))
                 .processor(filterProcessor)
                 .writer(compositeWriter())
+                .transactionManager(transactionManager)
                 .taskExecutor(taskExecutor)
                 .build();
     }
