@@ -60,7 +60,7 @@ public class ParallelTaskApp {
 
     public static void main(String[] args) {
         String[] newArgs = new String[]{"inputFlatFile=data/bigtransactions.csv",
-                "outputFile=batch-task-demo/target/item-processor.csv"};
+                "outputFile=batch-task-demo/target/items-processor.csv"};
         SpringApplication.run(ParallelTaskApp.class, newArgs);
     }
 
@@ -79,11 +79,13 @@ public class ParallelTaskApp {
     @Autowired
     private ChunkSkipListener skipListener;
 
+    @Autowired
+    private PlatformTransactionManager transactionManager;
+
     @Bean
     public Job parallelTransactionJob() {
         return this.jobBuilderFactory.get("parallelTransactionJob")
-                .start(parseCsvRecordStep1(null, null))
-                .preventRestart()
+                .start(parseCsvRecordStep1(null))
                 .listener(jobListener)
                 .build();
     }
@@ -115,7 +117,7 @@ public class ParallelTaskApp {
 
     @StepScope
     @Qualifier("taskExecutor")
-    public Step parseCsvRecordStep1(ThreadPoolTaskExecutor taskExecutor, PlatformTransactionManager transactionManager) {
+    public Step parseCsvRecordStep1(ThreadPoolTaskExecutor taskExecutor) {
         return this.stepBuilderFactory.get("parseCsvRecordStep1")
                 .<Transaction, Transaction>chunk(1000)
                 .faultTolerant()

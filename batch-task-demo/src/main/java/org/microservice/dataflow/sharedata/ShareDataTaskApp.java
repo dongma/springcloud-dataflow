@@ -1,4 +1,4 @@
-package org.microservice.dataflow.condition;
+package org.microservice.dataflow.sharedata;
 
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
