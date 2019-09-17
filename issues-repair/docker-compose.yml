@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+  mysql:
+    image: mariadb:10.2
+    environment:
+      MYSQL_DATABASE: dataflow
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: rootpw
+    expose:
+      - 3306
+  rabbitmq:
+    image: rabbitmq:3.7
+    expose:
+      - "5672"
+  redis:
+    image: redis:2.8
+    expose:
+      - "6379"
+  dataflow-server:
+    image: springcloud/spring-cloud-dataflow-server-local:${DATAFLOW_VERSION}
+    container_name: dataflow-server
+    ports:
+      - "9393:9393"
+      - "9000-9010:9000-9010"
+    environment:
+      - spring.cloud.dataflow.applicationProperties.stream.spring.rabbitmq.host=rabbitmq
+      - spring.datasource.url=jdbc:mysql://mysql:3306/dataflow
+      - spring.datasource.username=root
+      - spring.datasource.password=rootpw
+      - spring.datasource.driver-class-name=org.mariadb.jdbc.Driver 
+      - spring.cloud.dataflow.applicationProperties.stream.spring.redis.host=redis
+      - spring.redis.host=redis
+
+  app-import:
+    image: springcloud/openjdk:latest
+    depends_on:
+      - dataflow-server
+    command: >
+      /bin/sh -c "
+        while ! nc -z dataflow-server 9393;
+        do
+          sleep 1;
+        done;
+        wget -qO- 'http://dataflow-server:9393/apps' --post-data='uri=bit.ly/Celsius-SR3-stream-applications-rabbit-maven&force=true';
+        echo 'Stream apps imported'
+        wget -qO- 'http://dataflow-server:9393/apps' --post-data='uri=http://bit.ly/Clark-GA-task-applications-maven&force=true';
+        echo 'Task apps imported'"
