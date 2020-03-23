@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          # 配置在使用kafka发送消息时kafka节点信息
+          brokers: localhost:9092
+          # 配置在kafka启动时连接zookeeper的地址
+          zk-nodes: localhost:2181
+      # spring cloud stream默认绑定kafka消息中间件
+      default-binder: kafka
+      bindings:
+        # 在processor中定义处理消息的input topic
+        input:
+          destination: usage-detail
+        # 在将消息处理后, 将结果转发到另外一个topic上
+        output:
+          destination: usage-cost
+
+# processor应用启动的端口为9092
+server:
+  port: 9011
