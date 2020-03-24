@@ -2,18 +2,18 @@ spring:
   cloud:
     stream:
       bindings:
-        # ÉèÖÃspring cloud stream @source ÏûÏ¢Êä³öµ½kafkaµÄµØÖ·
+        # è®¾ç½®spring cloud stream @source æ¶ˆæ¯è¾“å‡ºåˆ°kafkaçš„åœ°å€
         output:
           destination: usage-detail
       kafka:
         binder:
-          # ÅäÖÃÔÚkafkaÆô¶¯Ê±Á¬½ÓzookeeperµÄµØÖ·
+          # é…ç½®åœ¨kafkaå¯åŠ¨æ—¶è¿æ¥zookeeperçš„åœ°å€
           zk-nodes: localhost:2181
-          # ÅäÖÃÔÚÊ¹ÓÃkafka·¢ËÍÏûÏ¢Ê±kafka½ÚµãĞÅÏ¢
+          # é…ç½®åœ¨ä½¿ç”¨kafkaå‘é€æ¶ˆæ¯æ—¶kafkaèŠ‚ç‚¹ä¿¡æ¯
           brokers: localhost:9092
-      # spring cloud streamÄ¬ÈÏ°ó¶¨kafkaÏûÏ¢ÖĞ¼ä¼ş
+      # spring cloud streamé»˜è®¤ç»‘å®škafkaæ¶ˆæ¯ä¸­é—´ä»¶
       default-binder: kafka
 
-# Ó¦ÓÃÆô¶¯µÄ¶Ë¿ÚÎª9091
+# åº”ç”¨å¯åŠ¨çš„ç«¯å£ä¸º9091
 server:
   port: 9091

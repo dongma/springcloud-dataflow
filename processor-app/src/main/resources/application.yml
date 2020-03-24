@@ -3,20 +3,20 @@ spring:
     stream:
       kafka:
         binder:
-          # ÅäÖÃÔÚÊ¹ÓÃkafka·¢ËÍÏûÏ¢Ê±kafka½ÚµãĞÅÏ¢
+          # é…ç½®åœ¨ä½¿ç”¨kafkaå‘é€æ¶ˆæ¯æ—¶kafkaèŠ‚ç‚¹ä¿¡æ¯
           brokers: localhost:9092
-          # ÅäÖÃÔÚkafkaÆô¶¯Ê±Á¬½ÓzookeeperµÄµØÖ·
+          # é…ç½®åœ¨kafkaå¯åŠ¨æ—¶è¿æ¥zookeeperçš„åœ°å€
           zk-nodes: localhost:2181
-      # spring cloud streamÄ¬ÈÏ°ó¶¨kafkaÏûÏ¢ÖĞ¼ä¼ş
+      # spring cloud streamé»˜è®¤ç»‘å®škafkaæ¶ˆæ¯ä¸­é—´ä»¶
       default-binder: kafka
       bindings:
-        # ÔÚprocessorÖĞ¶¨Òå´¦ÀíÏûÏ¢µÄinput topic
+        # åœ¨processorä¸­å®šä¹‰å¤„ç†æ¶ˆæ¯çš„input topic
         input:
           destination: usage-detail
-        # ÔÚ½«ÏûÏ¢´¦Àíºó, ½«½á¹û×ª·¢µ½ÁíÍâÒ»¸ötopicÉÏ
+        # åœ¨å°†æ¶ˆæ¯å¤„ç†å, å°†ç»“æœè½¬å‘åˆ°å¦å¤–ä¸€ä¸ªtopicä¸Š
         output:
           destination: usage-cost
 
-# processorÓ¦ÓÃÆô¶¯µÄ¶Ë¿ÚÎª9092
+# processoråº”ç”¨å¯åŠ¨çš„ç«¯å£ä¸º9092
 server:
   port: 9011

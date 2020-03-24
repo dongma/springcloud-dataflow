@@ -3,17 +3,17 @@ spring:
     stream:
       kafka:
         binder:
-          # ÅäÖÃÔÚÊ¹ÓÃkafka·¢ËÍÏûÏ¢Ê±kafka½ÚµãĞÅÏ¢
+          # é…ç½®åœ¨ä½¿ç”¨kafkaå‘é€æ¶ˆæ¯æ—¶kafkaèŠ‚ç‚¹ä¿¡æ¯
           brokers: localhost:9092
-          # ÅäÖÃÔÚkafkaÆô¶¯Ê±Á¬½ÓzookeeperµÄµØÖ·
+          # é…ç½®åœ¨kafkaå¯åŠ¨æ—¶è¿æ¥zookeeperçš„åœ°å€
           zk-nodes: localhost:2181
-      # spring cloud streamÄ¬ÈÏ°ó¶¨kafkaÏûÏ¢ÖĞ¼ä¼ş
+      # spring cloud streamé»˜è®¤ç»‘å®škafkaæ¶ˆæ¯ä¸­é—´ä»¶
       default-binder: kafka
       bindings:
-        # ¶¨ÒåsinkÏû·ÑÏûÏ¢µÄtopic
+        # å®šä¹‰sinkæ¶ˆè´¹æ¶ˆæ¯çš„topic
         input:
           destination: usage-cost
 
-# sinkÓ¦ÓÃÆô¶¯µÄ¶Ë¿ÚºÅ
+# sinkåº”ç”¨å¯åŠ¨çš„ç«¯å£å·
 server:
   port: 9012
