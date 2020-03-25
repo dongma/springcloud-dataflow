@@ -8,9 +8,9 @@ spring:
       kafka:
         binder:
           # 配置在kafka启动时连接zookeeper的地址
-          zk-nodes: localhost:2181
+          zk-nodes: 192.168.170.128:2181
           # 配置在使用kafka发送消息时kafka节点信息
-          brokers: localhost:9092
+          brokers: 192.168.170.128:9092
       # spring cloud stream默认绑定kafka消息中间件
       default-binder: kafka
 
